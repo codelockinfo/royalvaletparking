@@ -2,6 +2,15 @@
 <html lang="en">
 
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9HW527QT15"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-9HW527QT15');
+    </script>
+
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -3430,7 +3439,7 @@
             </div>
 
             <div class="row">
-                <div class="col-xl-4 col-lg-6">
+                <div class="col-xl-4 col-lg-6 pb-4">
                     <div class="services-one__single services-one__single--featured">
                         <div class="services-one__icon">
                             <i class="fas fa-calendar-check"></i>
@@ -3446,7 +3455,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-4 col-lg-6">
+                <div class="col-xl-4 col-lg-6 pb-4">
                     <div class="services-one__single">
                         <div class="services-one__icon">
                             <i class="fas fa-hotel"></i>
@@ -3462,7 +3471,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-4 col-lg-6">
+                <div class="col-xl-4 col-lg-6 pb-4">
                     <div class="services-one__single">
                         <div class="services-one__icon">
                             <i class="fas fa-building"></i>
@@ -4020,6 +4029,12 @@
             showMoreBtn.style.display = 'inline-flex';
 
             showMoreBtn.addEventListener('click', function () {
+                // GA4 Event Tracking
+                gtag('event', 'show_more_click', {
+                    'event_category': 'Gallery',
+                    'event_label': 'Show More Events'
+                });
+                
                 if (!isExpanded) {
                     // Show all images
                     galleryItems.forEach((item, index) => {
@@ -4131,6 +4146,187 @@
             });
         });
 
+        // GA4 Event Tracking for Form Submission
+        const contactForm = document.getElementById('contactForm');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                gtag('event', 'form_submit', {
+                    'event_category': 'Contact Form',
+                    'event_label': 'Booking Request'
+                });
+            });
+        }
+
+        // GA4 Event Tracking - Navigation Clicks
+        document.querySelectorAll('.main-menu__list a, .mobile-header__menu a').forEach(link => {
+            link.addEventListener('click', function() {
+                const sectionName = this.getAttribute('href').replace('#', '') || 'unknown';
+                gtag('event', 'navigation_click', {
+                    'event_category': 'Navigation',
+                    'event_label': sectionName
+                });
+            });
+        });
+
+        // GA4 Event Tracking - Call Button Clicks
+        document.querySelectorAll('a[href^="tel:"]').forEach(callLink => {
+            callLink.addEventListener('click', function() {
+                const phoneNumber = this.getAttribute('href').replace('tel:', '');
+                gtag('event', 'phone_click', {
+                    'event_category': 'Contact',
+                    'event_label': phoneNumber
+                });
+            });
+        });
+
+        // GA4 Event Tracking - Email Clicks
+        document.querySelectorAll('a[href^="mailto:"]').forEach(emailLink => {
+            emailLink.addEventListener('click', function() {
+                gtag('event', 'email_click', {
+                    'event_category': 'Contact',
+                    'event_label': 'Email Contact'
+                });
+            });
+        });
+
+        // GA4 Event Tracking - WhatsApp Clicks
+        document.querySelectorAll('a[href*="whatsapp.com"]').forEach(whatsappLink => {
+            whatsappLink.addEventListener('click', function() {
+                gtag('event', 'whatsapp_click', {
+                    'event_category': 'Contact',
+                    'event_label': 'WhatsApp Contact'
+                });
+            });
+        });
+
+        // GA4 Event Tracking - Gallery Image Clicks
+        document.querySelectorAll('.gallery-item').forEach(galleryItem => {
+            galleryItem.addEventListener('click', function() {
+                const eventType = this.getAttribute('data-event') || 'unknown';
+                gtag('event', 'gallery_image_click', {
+                    'event_category': 'Gallery',
+                    'event_label': eventType
+                });
+            });
+        });
+
+        // GA4 Event Tracking - Service Section Clicks
+        document.querySelectorAll('.services-one__title a, .feature-one__title a').forEach(serviceLink => {
+            serviceLink.addEventListener('click', function() {
+                const serviceName = this.textContent.trim();
+                gtag('event', 'service_click', {
+                    'event_category': 'Services',
+                    'event_label': serviceName
+                });
+            });
+        });
+
+        // GA4 Event Tracking - Team Section Clicks
+        document.querySelectorAll('.team-one__single').forEach(teamMember => {
+            teamMember.addEventListener('click', function() {
+                const memberName = this.querySelector('.team-one__name')?.textContent.trim() || 'Unknown';
+                gtag('event', 'team_click', {
+                    'event_category': 'Team',
+                    'event_label': memberName
+                });
+            });
+        });
+
+        // GA4 Event Tracking - Video Clicks
+        document.querySelectorAll('.video-item').forEach(videoItem => {
+            videoItem.addEventListener('click', function() {
+                const eventType = this.getAttribute('data-event') || 'unknown';
+                gtag('event', 'video_click', {
+                    'event_category': 'Video',
+                    'event_label': eventType
+                });
+            });
+        });
+
+        // GA4 Event Tracking - CTA Button Clicks
+        document.querySelectorAll('.btn-primary, .cta-buttons a, .welcome-one__btn, .feature-one__btn').forEach(ctaButton => {
+            ctaButton.addEventListener('click', function() {
+                const buttonText = this.textContent.trim() || 'CTA Button';
+                gtag('event', 'cta_click', {
+                    'event_category': 'CTA',
+                    'event_label': buttonText
+                });
+            });
+        });
+
+
+        // GA4 Event Tracking - Scroll Depth
+        let maxScroll = 0;
+        window.addEventListener('scroll', function() {
+            const scrollPercent = Math.round((window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
+            
+            if (scrollPercent >= 25 && maxScroll < 25) {
+                gtag('event', 'scroll', {
+                    'event_category': 'Engagement',
+                    'event_label': '25% Scroll'
+                });
+                maxScroll = 25;
+            } else if (scrollPercent >= 50 && maxScroll < 50) {
+                gtag('event', 'scroll', {
+                    'event_category': 'Engagement',
+                    'event_label': '50% Scroll'
+                });
+                maxScroll = 50;
+            } else if (scrollPercent >= 75 && maxScroll < 75) {
+                gtag('event', 'scroll', {
+                    'event_category': 'Engagement',
+                    'event_label': '75% Scroll'
+                });
+                maxScroll = 75;
+            } else if (scrollPercent >= 90 && maxScroll < 90) {
+                gtag('event', 'scroll', {
+                    'event_category': 'Engagement',
+                    'event_label': '90% Scroll'
+                });
+                maxScroll = 90;
+            }
+        });
+
+        // GA4 Event Tracking - Section Views (Intersection Observer)
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const sectionId = entry.target.id || entry.target.className;
+                    gtag('event', 'section_view', {
+                        'event_category': 'Page View',
+                        'event_label': sectionId
+                    });
+                    sectionObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        // Observe all major sections
+        document.querySelectorAll('section[id], #home, #about, #services, #team, #contact, #gallery, #testimonial').forEach(section => {
+            sectionObserver.observe(section);
+        });
+
+        // GA4 Event Tracking - Map/Directions Click
+        document.querySelectorAll('a[href*="maps.google.com"]').forEach(mapLink => {
+            mapLink.addEventListener('click', function() {
+                gtag('event', 'map_click', {
+                    'event_category': 'Contact',
+                    'event_label': 'Get Directions'
+                });
+            });
+        });
+
+        // GA4 Event Tracking - Social Media Clicks
+        document.querySelectorAll('a[href*="instagram.com"], a[href*="facebook.com"]').forEach(socialLink => {
+            socialLink.addEventListener('click', function() {
+                const platform = this.href.includes('instagram') ? 'Instagram' : 'Facebook';
+                gtag('event', 'social_click', {
+                    'event_category': 'Social Media',
+                    'event_label': platform
+                });
+            });
+        });
+
         // Animated Counter for Stats
         function animateCounter(element) {
             const target = parseInt(element.getAttribute('data-count'));
@@ -4199,6 +4395,11 @@
         // Smooth scroll to top when button is clicked
         scrollToTopBtn.addEventListener('click', function (e) {
             e.preventDefault();
+            // GA4 Event Tracking
+            gtag('event', 'scroll_to_top', {
+                'event_category': 'Navigation',
+                'event_label': 'Scroll to Top'
+            });
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
